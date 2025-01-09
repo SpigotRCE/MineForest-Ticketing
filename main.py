@@ -15,8 +15,11 @@ with open("config.json", mode="r") as config_file:
 
 BOT_TOKEN = config["token"]  #Your Bot Token from https://discord.dev
 GUILD_ID = config["guild_id"] #Your Server ID aka Guild ID  
-CATEGORY_ID1 = config["category_id_1"] #Category 1 where the Bot should open the Ticket for the Ticket option 1
-CATEGORY_ID2 = config["category_id_2"] #Category 2 where the Bot should open the Ticket for the Ticket option 2
+CATEGORY_ID1 = config["category_id_1"]
+CATEGORY_ID2 = config["category_id_2"]
+CATEGORY_ID3 = config["category_id_3"]
+CATEGORY_ID4 = config["category_id_4"]
+CATEGORY_ID5 = config["category_id_5"]
 
 bot = commands.Bot(intents=discord.Intents.all())
 
@@ -30,8 +33,11 @@ async def on_ready():
 async def richpresence():
     guild = bot.get_guild(GUILD_ID)
     category1 = discord.utils.get(guild.categories, id=int(CATEGORY_ID1))
-    category2 = discord.utils.get(guild.categories, id=int(CATEGORY_ID2)) #You need to add/change things if you have more or less than 2 Categories
-    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f'Tickets | {len(category1.channels) + len(category2.channels)}'))
+    category2 = discord.utils.get(guild.categories, id=int(CATEGORY_ID2))
+    category3 = discord.utils.get(guild.categories, id=int(CATEGORY_ID3))
+    category4 = discord.utils.get(guild.categories, id=int(CATEGORY_ID4))
+    category5 = discord.utils.get(guild.categories, id=int(CATEGORY_ID5))
+    await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f'Tickets | {len(category1.channels) + len(category2.channels) + len(category3.channels) + len(category4.channels) + len(category5.channels)}'))
 
 bot.add_cog(Ticket_System(bot))
 bot.add_cog(Ticket_Command(bot))
