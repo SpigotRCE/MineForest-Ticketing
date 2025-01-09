@@ -1,13 +1,15 @@
 {
   "token": "",
-  "guild_id": 123,
-  "ticket_channel_id": 123,
-  "category_id_1": 123,
-  "category_id_2": 123,
-  "team_role_id_1": 123,
-  "team_role_id_2": 123,
-  "log_channel_id": 123,
-  "timezone": "CET",
+  "guild_id": 1223941062997835778,
+  "ticket_channel_id": 1307018857067581542,
+  "category_id_1": 1326252572067102772,
+  "category_id_2": 1326252452407672954,
+  "category_id_3": 1326252691101319260,
+  "category_id_4": 1326252930915111043,
+  "category_id_5": 1326253017871421532,
+  "team_role_id_1": 1307024639888719922,
+  "log_channel_id": 1326254701896929320,
+  "timezone": "Asia/Kolkata",
   "embed_title": "Support-Tickets",
   "embed_description": "Here you can open a Support Ticket!"
 }
