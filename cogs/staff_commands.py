@@ -10,9 +10,8 @@ from discord.ext import commands
 from discord.ext.commands import has_permissions
 from cogs.ticket_system import MyView
 
-#This will get everything from the config.json file
-with open("config.json", mode="r") as config_file:
-    config = json.load(config_file)
+with open("media.json", mode="r") as f:
+    file = json.load(f)
 
 
 class Staff_Command(commands.Cog):
@@ -20,9 +19,9 @@ class Staff_Command(commands.Cog):
         self.bot = bot
         self.media_content = None
         try:
-            self.media_content = config['media_message']
+            self.media_content = file['media_message']
         except Exception:
-            print("Failed to load media content from config.json")
+            print("Failed to load media content from media.json")
 
     @commands.Cog.listener()
     async def on_ready(self):
@@ -39,6 +38,6 @@ class Staff_Command(commands.Cog):
     @has_permissions(administrator=True)
     async def set_media(self, ctx, *, text: str):
         self.media_content = text
-        with open("config.json", mode="w") as f:
+        with open("media.json", mode="w") as f:
             json.dump({"media_message": text}, f, indent=4)
         await ctx.send(f'Media has been set to: {text}')
