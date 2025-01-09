@@ -171,6 +171,15 @@ class CloseButton(discord.ui.View):
 
 
 #Buttons to reopen or delete the Ticket
+def convert_to_unix_timestamp(date_string):
+    date_format = "%Y-%m-%d %H:%M:%S"
+    dt_obj = datetime.strptime(date_string, date_format)
+    berlin_tz = pytz.timezone('Europe/Berlin')
+    dt_obj = berlin_tz.localize(dt_obj)
+    dt_obj_utc = dt_obj.astimezone(pytz.utc)
+    return int(dt_obj_utc.timestamp())
+
+
 class TicketOptions(discord.ui.View):
     def __init__(self, bot):
         self.bot = bot
@@ -187,10 +196,8 @@ class TicketOptions(discord.ui.View):
         id, ticket_creator_id, ticket_created = ticket_data
         ticket_creator = guild.get_member(ticket_creator_id)
 
-        ticket_created_unix = self.convert_to_unix_timestamp(ticket_created)
-        timezone = pytz.timezone(TIMEZONE)
-        ticket_closed = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S')
-        ticket_closed_unix = self.convert_to_unix_timestamp(ticket_closed)
+        ticket_created_unix = convert_to_unix_timestamp(ticket_created)
+        ticket_closed_unix = convert_to_unix_timestamp(datetime.now(pytz.timezone(TIMEZONE)).strftime('%Y-%m-%d %H:%M:%S'))
 
         #Creating the Transcript
         military_time: bool = True
@@ -222,11 +229,3 @@ class TicketOptions(discord.ui.View):
         await interaction.channel.delete(reason="Ticket Deleted")
         cur.execute("DELETE FROM ticket WHERE discord_id=?", (ticket_creator_id,))
         conn.commit()
-
-    def convert_to_unix_timestamp(self, date_string):
-        date_format = "%Y-%m-%d %H:%M:%S"
-        dt_obj = datetime.strptime(date_string, date_format)
-        berlin_tz = pytz.timezone('Europe/Berlin')
-        dt_obj = berlin_tz.localize(dt_obj)
-        dt_obj_utc = dt_obj.astimezone(pytz.utc)
-        return int(dt_obj_utc.timestamp())
