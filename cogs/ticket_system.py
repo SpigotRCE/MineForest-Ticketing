@@ -65,7 +65,7 @@ class MyView(discord.ui.View):
                 label="General Support",  #Name of the 1 Select Menu Option
                 description="You will get help here!",  #Description of the 1 Select Menu Option
                 emoji="❓",        #Emoji of the 1 Option  if you want a Custom Emoji read this  https://github.com/Simoneeeeeeee/Discord-Select-Menu-Ticket-Bot/tree/main#how-to-use-custom-emojis-from-your-discors-server-in-the-select-menu
-                value="support1"   #Don't change this value otherwise the code will not work anymore!!!!
+                value="support"   #Don't change this value otherwise the code will not work anymore!!!!
             ),
             discord.SelectOption(
                 label="Player Report",  #Name of the 2 Select Menu Option
@@ -113,7 +113,17 @@ class MyView(discord.ui.View):
                 cur.execute("SELECT id FROM ticket WHERE discord_id=?", (user_id,)) #Get the Ticket Number from the Database
                 ticket_number = cur.fetchone()[0]
 
-                category = self.bot.get_channel(CATEGORY_ID1)
+                if "support" in interaction.data['values']:
+                    category = self.bot.get_channel(CATEGORY_ID1)
+                if "report_player" in interaction.data['values']:
+                    category = self.bot.get_channel(CATEGORY_ID2)
+                if "report_staff" in interaction.data['values']:
+                    category = self.bot.get_channel(CATEGORY_ID3)
+                if "punishment_appeal" in interaction.data['values']:
+                    category = self.bot.get_channel(CATEGORY_ID4)
+                if "reroll_request" in interaction.data['values']:
+                    category = self.bot.get_channel(CATEGORY_ID5)
+
                 ticket_channel = await guild.create_text_channel(f"ticket-{interaction.user.name}", category=category,
                                                                     topic=f"{interaction.user.id}")
 
