@@ -8,6 +8,7 @@ from discord import *
 from discord.ext import commands, tasks
 from cogs.ticket_system import Ticket_System
 from cogs.ticket_commands import Ticket_Command
+from cogs.staff_commands import Staff_Command
 
 #This will get everything from the config.json file
 with open("config.json", mode="r") as config_file:
@@ -21,7 +22,7 @@ CATEGORY_ID3 = config["category_id_3"]
 CATEGORY_ID4 = config["category_id_4"]
 CATEGORY_ID5 = config["category_id_5"]
 
-bot = commands.Bot(intents=discord.Intents.all())
+bot = commands.Bot(intents=discord.Intents.all(), command_prefix='!')
 
 @bot.event
 async def on_ready():
@@ -41,4 +42,5 @@ async def richpresence():
 
 bot.add_cog(Ticket_System(bot))
 bot.add_cog(Ticket_Command(bot))
+bot.add_cog(Staff_Command(bot))
 bot.run(BOT_TOKEN)
