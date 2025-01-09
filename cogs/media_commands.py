@@ -14,7 +14,7 @@ with open("media.json", mode="r") as f:
     file = json.load(f)
 
 
-class Staff_Command(commands.Cog):
+class MediaCommand(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
         self.media_content = None

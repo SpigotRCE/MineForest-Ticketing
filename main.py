@@ -8,7 +8,7 @@ from discord import *
 from discord.ext import commands, tasks
 from cogs.ticket_system import Ticket_System
 from cogs.ticket_commands import Ticket_Command
-from cogs.staff_commands import Staff_Command
+from cogs.media_commands import MediaCommand
 
 #This will get everything from the config.json file
 with open("config.json", mode="r") as config_file:
@@ -42,5 +42,5 @@ async def richpresence():
 
 bot.add_cog(Ticket_System(bot))
 bot.add_cog(Ticket_Command(bot))
-bot.add_cog(Staff_Command(bot))
+bot.add_cog(MediaCommand(bot))
 bot.run(BOT_TOKEN)
