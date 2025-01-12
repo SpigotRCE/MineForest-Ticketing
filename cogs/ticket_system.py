@@ -124,7 +124,7 @@ class MyView(discord.ui.View):
                 if "reroll_request" in interaction.data['values']:
                     category = self.bot.get_channel(CATEGORY_ID5)
 
-                ticket_channel = await guild.create_text_channel(f"ticket-{interaction.user.name}", category=category,
+                ticket_channel = await guild.create_text_channel(f"{ticket_number}-{interaction.user.name}", category=category,
                                                                     topic=f"{interaction.user.id}")
 
                 await ticket_channel.set_permissions(guild.get_role(TEAM_ROLE1), send_messages=True, read_messages=True, add_reactions=False, #Set the Permissions for the Staff Team
