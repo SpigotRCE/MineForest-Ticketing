@@ -104,7 +104,7 @@ class Ticket_Command(commands.Cog):
         military_time: bool = True
         transcript = await chat_exporter.export(ctx.channel, limit=200, tz_info=TIMEZONE, military_time=military_time, bot=self.bot)
 
-        transcript_file2 = discord.File(
+        transcript_file = discord.File(
             io.BytesIO(transcript.encode()),
             filename=f"transcript-{ctx.channel.name}.html")
         
@@ -117,7 +117,7 @@ class Ticket_Command(commands.Cog):
         transcript_info.add_field(name="Ticket Closed", value=f"<t:{ticket_closed_unix}:f>", inline=True)
 
         await ctx.respond(embed=embed)
-        await channel.send(embed=transcript_info, file=transcript_file2)
+        await channel.send(embed=transcript_info, file=transcript_file)
         await asyncio.sleep(3)
         await ctx.channel.delete(reason="Ticket Deleted")
         cur.execute("DELETE FROM ticket WHERE discord_id=?", (ticket_creator_id,))
