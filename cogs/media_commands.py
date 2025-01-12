@@ -1,14 +1,8 @@
-import discord
 import json
-import chat_exporter
-import io
-import pytz
-from datetime import datetime
-import sqlite3
+
 from discord import *
 from discord.ext import commands
 from discord.ext.commands import has_permissions
-from cogs.ticket_system import MyView
 
 with open("media.json", mode="r") as f:
     file = json.load(f)

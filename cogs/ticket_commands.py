@@ -1,16 +1,18 @@
-import discord
-import json
-import chat_exporter
 import io
-import pytz
-from datetime import datetime
+import json
 import sqlite3
+from datetime import datetime
+
+import chat_exporter
+import discord
+import pytz
 from discord import *
 from discord.ext import commands
 from discord.ext.commands import has_permissions
+
 from cogs.ticket_system import MyView
 
-#This will get everything from the config.json file
+# This will get everything from the config.json file
 with open("config.json", mode="r") as config_file:
     config = json.load(config_file)
 
@@ -21,7 +23,7 @@ TIMEZONE = config["timezone"]
 EMBED_TITLE = config["embed_title"]
 EMBED_DESCRIPTION = config["embed_description"]
 
-#This will create and connect to the database
+# This will create and connect to the database
 conn = sqlite3.connect('Database.db')
 cur = conn.cursor()
 
@@ -49,7 +51,7 @@ class Ticket_Command(commands.Cog):
         cur.close()
         conn.close()
 
-    #Slash Command to show the Ticket Menu in the Ticket Channel only needs to be used once
+    # Slash Command to show the Ticket Menu in the Ticket Channel only needs to be used once
     @commands.slash_command(name="ticket")
     @has_permissions(administrator=True)
     async def ticket(self, ctx):
@@ -58,30 +60,39 @@ class Ticket_Command(commands.Cog):
         await self.channel.send(embed=embed, view=MyView(self.bot))
         await ctx.respond("Ticket Menu was send!", ephemeral=True)
 
-    #Slash Command to add Members to the Ticket
+    # Slash Command to add Members to the Ticket
     @commands.slash_command(name="add", description="Add a Member to the Ticket")
-    async def add(self, ctx, member: Option(discord.Member, description="Which Member you want to add to the Ticket", required = True)):
+    async def add(self, ctx, member: Option(discord.Member, description="Which Member you want to add to the Ticket",
+                                            required=True)):
         if "ticket-" in ctx.channel.name or "ticket-closed-" in ctx.channel.name:
             await ctx.channel.set_permissions(member, send_messages=True, read_messages=True, add_reactions=False,
-                                                embed_links=True, attach_files=True, read_message_history=True,
-                                                external_emojis=True)
-            self.embed = discord.Embed(description=f'Added {member.mention} to this Ticket <#{ctx.channel.id}>! \n Use /remove to remove a User.', color=discord.colour.Color.green())
+                                              embed_links=True, attach_files=True, read_message_history=True,
+                                              external_emojis=True)
+            self.embed = discord.Embed(
+                description=f'Added {member.mention} to this Ticket <#{ctx.channel.id}>! \n Use /remove to remove a User.',
+                color=discord.colour.Color.green())
             await ctx.respond(embed=self.embed)
         else:
-            self.embed = discord.Embed(description=f'You can only use this command in a Ticket!', color=discord.colour.Color.red())
+            self.embed = discord.Embed(description=f'You can only use this command in a Ticket!',
+                                       color=discord.colour.Color.red())
             await ctx.respond(embed=self.embed)
 
-    #Slash Command to remove Members from the Ticket
+    # Slash Command to remove Members from the Ticket
     @commands.slash_command(name="remove", description="Remove a Member from the Ticket")
-    async def remove(self, ctx, member: Option(discord.Member, description="Which Member you want to remove from the Ticket", required = True)):
+    async def remove(self, ctx,
+                     member: Option(discord.Member, description="Which Member you want to remove from the Ticket",
+                                    required=True)):
         if "ticket-" in ctx.channel.name or "ticket-closed-" in ctx.channel.name:
             await ctx.channel.set_permissions(member, send_messages=False, read_messages=False, add_reactions=False,
-                                                embed_links=False, attach_files=False, read_message_history=False,
-                                                external_emojis=False)
-            self.embed = discord.Embed(description=f'Removed {member.mention} from this Ticket <#{ctx.channel.id}>! \n Use /add to add a User.', color=discord.colour.Color.green())
+                                              embed_links=False, attach_files=False, read_message_history=False,
+                                              external_emojis=False)
+            self.embed = discord.Embed(
+                description=f'Removed {member.mention} from this Ticket <#{ctx.channel.id}>! \n Use /add to add a User.',
+                color=discord.colour.Color.green())
             await ctx.respond(embed=self.embed)
         else:
-            self.embed = discord.Embed(description=f'You can only use this command in a Ticket!', color=discord.colour.Color.red())
+            self.embed = discord.Embed(description=f'You can only use this command in a Ticket!',
+                                       color=discord.colour.Color.red())
             await ctx.respond(embed=self.embed)
 
     @commands.slash_command(name="delete", description="Delete the Ticket")
@@ -100,9 +111,10 @@ class Ticket_Command(commands.Cog):
         ticket_closed = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S')
         ticket_closed_unix = convert_to_unix_timestamp(ticket_closed)
 
-        #Creating the Transcript
+        # Creating the Transcript
         military_time: bool = True
-        transcript = await chat_exporter.export(ctx.channel, limit=200, tz_info=TIMEZONE, military_time=military_time, bot=self.bot)
+        transcript = await chat_exporter.export(ctx.channel, limit=200, tz_info=TIMEZONE, military_time=military_time,
+                                                bot=self.bot)
 
         transcript_file = discord.File(
             io.BytesIO(transcript.encode()),
@@ -126,4 +138,3 @@ class Ticket_Command(commands.Cog):
         await ctx.channel.delete(reason="Ticket Deleted")
         cur.execute("DELETE FROM ticket WHERE discord_id=?", (ticket_creator_id,))
         conn.commit()
-

@@ -8,10 +8,10 @@
 <p align=center>This is a Simple Ticket Bot with a Select Menu and its easy to Customize</p>
 
 - ### Previews
-    <a align=left href='https://imgur.com/a/Z3wAn4c' target="_blank">Imgur Website</a>
+  <a align=left href='https://imgur.com/a/Z3wAn4c' target="_blank">Imgur Website</a>
 - ### Update v.1.8
-  - Fixed Bugs
-  - Added Created/Closed Timestamp into the Logs
+    - Fixed Bugs
+    - Added Created/Closed Timestamp into the Logs
 - ### Install all Required Modules
   ```sh
         pip install py-cord==2.4.0
@@ -42,16 +42,17 @@
       "embed_description": "Here you can open a Support Ticket!"
     ```
 - ### All Commands
-  - `/ticket`
-  - `/delete`
-  - `/add`
-  - `/remove`
+    - `/ticket`
+    - `/delete`
+    - `/add`
+    - `/remove`
 
 - ### How to use Custom emojis from your Discors Server in the Select Menu
-  - `Type in the Chat \ but do not send it, now Choose one Emoji that is one your server and press on it. Now it should look like that \<:emoji_name:emoji_id> now just remove the \ and paste the rest in your Code and here you go.`
+    -
+    `Type in the Chat \ but do not send it, now Choose one Emoji that is one your server and press on it. Now it should look like that \<:emoji_name:emoji_id> now just remove the \ and paste the rest in your Code and here you go.`
 - ### Discord
-  - <a href="https://discord.gg/ycZDpat7dB">Join my DC Server for help and create an Ticket</a>
-  - <a>If you want to Support me give this Project a Star </a>
-  - https://discord.gg/ycZDpat7dB
-  
+    - <a href="https://discord.gg/ycZDpat7dB">Join my DC Server for help and create an Ticket</a>
+    - <a>If you want to Support me give this Project a Star </a>
+    - https://discord.gg/ycZDpat7dB
+
 <p align="center">Apache License 2.0</p>

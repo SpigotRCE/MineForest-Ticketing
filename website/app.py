@@ -1,10 +1,12 @@
 import os
-from flask import Flask, render_template, send_file, render_template_string
+
+from flask import Flask, render_template, render_template_string
 
 app = Flask(__name__)
 
 # Path to the transcripts folder
 TRANSCRIPTS_FOLDER = os.path.join(os.getcwd(), 'transcripts')
+
 
 @app.route('/')
 def index():
