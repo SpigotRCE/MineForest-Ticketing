@@ -106,8 +106,12 @@ class Ticket_Command(commands.Cog):
 
         transcript_file = discord.File(
             io.BytesIO(transcript.encode()),
-            filename=f"transcript-{ctx.channel.name}.html")
-        
+            filename=f"transcript-{ctx.channel.name}.html"
+        )
+
+        with open(f"./transcripts/transcript-{ctx.channel.name}.html", "x") as f:
+            f.write(transcript)
+
         embed = discord.Embed(description=f'Ticket is deleting in 5 seconds.', color=0xff0000)
         transcript_info = discord.Embed(title=f"Ticket Deleted | {ctx.channel.name}", color=discord.colour.Color.blue())
         transcript_info.add_field(name="ID", value=id, inline=True)

@@ -1,6 +1,7 @@
 #Version: 1.9
 #GitHub: https://github.com/Simoneeeeeeee/Discord-Select-Menu-Ticket-Bot
 #Discord: discord.gg/ycZDpat7dB
+import threading
 
 import discord
 import json
@@ -9,6 +10,7 @@ from discord.ext import commands, tasks
 from cogs.ticket_system import Ticket_System
 from cogs.ticket_commands import Ticket_Command
 from cogs.media_commands import MediaCommand
+from website.app import app
 
 #This will get everything from the config.json file
 with open("config.json", mode="r") as config_file:
@@ -28,6 +30,7 @@ bot = commands.Bot(intents=discord.Intents.all(), command_prefix='!')
 async def on_ready():
     print(f'Bot Started | {bot.user.name}')
     richpresence.start()
+    threading.Thread(target=run_web_server).start()
 
 #Bot Status, Counting all opened Tickets in the Server. You need to add/change things if you have more or less than 2 Categories
 @tasks.loop(minutes=1)
@@ -39,6 +42,11 @@ async def richpresence():
     category4 = discord.utils.get(guild.categories, id=int(CATEGORY_ID4))
     category5 = discord.utils.get(guild.categories, id=int(CATEGORY_ID5))
     await bot.change_presence(activity=discord.Activity(type=discord.ActivityType.watching, name=f'Tickets | {len(category1.channels) + len(category2.channels) + len(category3.channels) + len(category4.channels) + len(category5.channels)}'))
+
+def run_web_server():
+    print("Starting Web Server...")
+    app.run(debug=True, use_reloader=False, port=25500, host="0.0.0.0")
+    print("Web Server Started")
 
 bot.add_cog(Ticket_System(bot))
 bot.add_cog(Ticket_Command(bot))

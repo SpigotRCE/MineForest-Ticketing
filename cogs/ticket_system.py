@@ -202,14 +202,15 @@ class TicketOptions(discord.ui.View):
         #Creating the Transcript
         military_time: bool = True
         transcript = await chat_exporter.export(interaction.channel, limit=200, tz_info=TIMEZONE, military_time=military_time, bot=self.bot)
-        
         transcript_file = discord.File(
             io.BytesIO(transcript.encode()),
-            filename=f"transcript-{interaction.channel.name}.html")
-        transcript_file2 = discord.File(
-            io.BytesIO(transcript.encode()),
-            filename=f"transcript-{interaction.channel.name}.html")
-        
+            filename=f"transcript-{interaction.channel.name}.html"
+        )
+
+
+        with open(f"./transcripts/transcript-{interaction.channel.name}.html", "x") as f:
+            f.write(transcript)
+
         embed = discord.Embed(description=f'Ticket is deleting in 5 seconds.', color=0xff0000)
         transcript_info = discord.Embed(title=f"Ticket Deleted | {interaction.channel.name}", color=discord.colour.Color.blue())
         transcript_info.add_field(name="ID", value=id, inline=True)
@@ -224,7 +225,7 @@ class TicketOptions(discord.ui.View):
         except:
             transcript_info.add_field(name="Error", value="Ticket Creator DM`s are disabled", inline=True)
 
-        await channel.send(embed=transcript_info, file=transcript_file2)
+        await channel.send(embed=transcript_info, file=transcript_file)
         await asyncio.sleep(3)
         await interaction.channel.delete(reason="Ticket Deleted")
         cur.execute("DELETE FROM ticket WHERE discord_id=?", (ticket_creator_id,))

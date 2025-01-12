@@ -38,6 +38,6 @@ class MediaCommand(commands.Cog):
     @has_permissions(administrator=True)
     async def set_media(self, ctx, *, text: str):
         self.media_content = text
-        with open("media.json", mode="w") as f:
+        with open("media.json", mode="x") as f:
             json.dump({"media_message": text}, f, indent=4)
         await ctx.send(f'Media has been set to: {text}')
