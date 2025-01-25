@@ -222,6 +222,15 @@ class TicketOptions(discord.ui.View):
         id, ticket_creator_id, ticket_created = ticket_data
         ticket_creator = guild.get_member(ticket_creator_id)
 
+        ticket_creator_mention = ""
+
+        if ticket_creator is None:
+            ticket_creator = ticket_creator_id
+            ticket_creator_mention = "<@" + ticket_creator + ">"
+            print("ticket_creator was None, using: ", ticket_creator)
+        else:
+            ticket_creator_mention = ticket_creator.mention
+
         ticket_created_unix = convert_to_unix_timestamp(ticket_created)
         ticket_closed_unix = convert_to_unix_timestamp(
             datetime.now(pytz.timezone(TIMEZONE)).strftime('%Y-%m-%d %H:%M:%S'))
@@ -238,20 +247,16 @@ class TicketOptions(discord.ui.View):
         with open(f"./transcripts/transcript-{interaction.channel.name}.html", "x") as f:
             f.write(transcript)
 
-        embed = discord.Embed(description=f'Ticket is deleting in 5 seconds.', color=0xff0000)
+        embed = discord.Embed(description=f'Ticket is deleting in ~5 seconds.', color=0xff0000)
         transcript_info = discord.Embed(title=f"Ticket Deleted | {interaction.channel.name}",
                                         color=discord.colour.Color.blue())
         transcript_info.add_field(name="ID", value=id, inline=True)
-        transcript_info.add_field(name="Opened by", value=ticket_creator.mention, inline=True)
+        transcript_info.add_field(name="Opened by", value=ticket_creator_mention, inline=True)
         transcript_info.add_field(name="Closed by", value=interaction.user.mention, inline=True)
         transcript_info.add_field(name="Ticket Created", value=f"<t:{ticket_created_unix}:f>", inline=True)
         transcript_info.add_field(name="Ticket Closed", value=f"<t:{ticket_closed_unix}:f>", inline=True)
 
         await interaction.response.send_message(embed=embed)
-        try:
-            await ticket_creator.send(embed=transcript_info, file=transcript_file)
-        except:
-            transcript_info.add_field(name="Error", value="Ticket Creator DM`s are disabled", inline=True)
 
         await channel.send(embed=transcript_info, file=transcript_file)
         await asyncio.sleep(3)

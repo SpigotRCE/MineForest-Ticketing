@@ -106,6 +106,15 @@ class Ticket_Command(commands.Cog):
         id, ticket_creator_id, ticket_created = ticket_data
         ticket_creator = guild.get_member(ticket_creator_id)
 
+        ticket_creator_mention = ""
+
+        if ticket_creator is None:
+            ticket_creator = ticket_creator_id
+            ticket_creator_mention = "<@" + ticket_creator + ">"
+            print("ticket_creator was None, using: ", ticket_creator)
+        else:
+            ticket_creator_mention = ticket_creator.mention
+
         ticket_created_unix = convert_to_unix_timestamp(ticket_created)
         timezone = pytz.timezone(TIMEZONE)
         ticket_closed = datetime.now(timezone).strftime('%Y-%m-%d %H:%M:%S')
@@ -124,10 +133,10 @@ class Ticket_Command(commands.Cog):
         with open(f"./transcripts/transcript-{ctx.channel.name}.html", "x") as f:
             f.write(transcript)
 
-        embed = discord.Embed(description=f'Ticket is deleting in 5 seconds.', color=0xff0000)
+        embed = discord.Embed(description=f'Ticket is deleting in ~5 seconds.', color=0xff0000)
         transcript_info = discord.Embed(title=f"Ticket Deleted | {ctx.channel.name}", color=discord.colour.Color.blue())
         transcript_info.add_field(name="ID", value=id, inline=True)
-        transcript_info.add_field(name="Opened by", value=ticket_creator.mention, inline=True)
+        transcript_info.add_field(name="Opened by", value=ticket_creator_mention, inline=True)
         transcript_info.add_field(name="Closed by", value=ctx.author.mention, inline=True)
         transcript_info.add_field(name="Ticket Created", value=f"<t:{ticket_created_unix}:f>", inline=True)
         transcript_info.add_field(name="Ticket Closed", value=f"<t:{ticket_closed_unix}:f>", inline=True)
