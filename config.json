@@ -12,5 +12,7 @@
   "timezone": "Asia/Kolkata",
   "embed_title": "Support-Tickets",
   "embed_description": "Here you can open a Support Ticket!",
-  "punishment_log_channel_id": 1326934998162604124
+  "punishment_log_channel_id": 1326934998162604124,
+  "web_id": "",
+  "web_pass": ""
 }

@@ -2,15 +2,24 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Transcript Files</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transcript Explorer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-<h1>List of Transcript Files</h1>
-<ul>
-    {% for file in html_files %}
-    <li><a href="{{ url_for('show_transcript', filename=file) }}">{{ file }}</a></li>
-    {% endfor %}
-</ul>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-4xl">
+        <h1 class="text-3xl font-bold text-gray-800 text-center">Transcript Files</h1>
+        <p class="text-gray-500 text-center mt-2">Select a file to view its content</p>
+
+        <ul class="mt-6 divide-y divide-gray-200">
+            {% for file in html_files %}
+            <li class="py-3 flex justify-between items-center">
+                <span class="text-gray-700 font-medium">{{ file }}</span>
+                <a href="{{ url_for('show_transcript', filename=file) }}"
+                   class="text-blue-500 hover:text-blue-600 hover:underline">View File</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
