@@ -11,5 +11,6 @@
   "log_channel_id": 1326254701896929320,
   "timezone": "Asia/Kolkata",
   "embed_title": "Support-Tickets",
-  "embed_description": "Here you can open a Support Ticket!"
+  "embed_description": "Here you can open a Support Ticket!",
+  "punishment_log_channel_id": 1326934998162604124
 }
